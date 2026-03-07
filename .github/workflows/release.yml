@@ -41,10 +41,13 @@ jobs:
           name: NumTag_Release_${{ matrix.runtime }}
           path: ./artifact
 
+      - name: "Setup ExeBundle"
+        run: winget install fmuecke.ExeBundle --include-unknown --accept-package-agreements --accept-source-agreements
+
       - name: "Pack"
         run: |
+          $u='https://github.com/badrelmers/RefrEnv/raw/refs/heads/main/refrenv.ps1'; $p=Join-Path $env:TEMP 'refrenv.ps1'; Invoke-WebRequest -Uri $u -OutFile $p; Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force; . $p
           cd artifact
-          winget install fmuecke.ExeBundle --include-unknown --accept-package-agreements --accept-source-agreements
           exebundle -e NumTag.exe -o NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe -a
 
       - name: "Upload Bundle"
