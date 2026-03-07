@@ -12,10 +12,6 @@ on:
       runtime:
         required: true
         type: string
-      archive:
-        required: false
-        type: boolean
-        default: true
 
 jobs:
   build:
@@ -38,4 +34,3 @@ jobs:
         with:
           name: NumTag_${{ inputs.config }}_${{ inputs.runtime }}
           path: artifact/**
-          archive: ${{ inputs.archive }}

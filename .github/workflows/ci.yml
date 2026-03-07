@@ -23,5 +23,4 @@ jobs:
     with:
       config: Debug
       runtime: ${{ matrix.runtime }}
-      archive: false
     secrets: inherit
