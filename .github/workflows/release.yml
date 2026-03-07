@@ -21,6 +21,7 @@ jobs:
     with:
       config: Release
       runtime: ${{ matrix.runtime }}
+      runs-on: windows-latest
     secrets: inherit
 
   pack:
