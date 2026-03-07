@@ -12,7 +12,8 @@ on:
   workflow_dispatch: 
 
 jobs:
-  ci:
+  build:
+    name: "CI Build"
     strategy:
       matrix:
         include:

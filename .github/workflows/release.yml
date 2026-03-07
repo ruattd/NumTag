@@ -1,0 +1,81 @@
+﻿name: "Build (Release)"
+
+permissions:
+  contents: read
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    name: "Release Build"
+    strategy:
+      matrix:
+        include:
+          - runtime: win-x64
+          - runtime: win-arm64
+      fail-fast: true
+    uses: ./.github/workflows/reusable.yml
+    with:
+      config: Release
+      runtime: ${{ matrix.runtime }}
+    secrets: inherit
+
+  pack:
+    name: "Pack Single Executable"
+    needs:
+      - build
+    strategy:
+      matrix:
+        include:
+          - runtime: win-x64
+          - runtime: win-arm64
+    runs-on: windows-latest
+    steps:
+      - name: "Download Artifact"
+        uses: actions/download-artifact@v7.0.0
+        with:
+          name: NumTag_Release_${{ matrix.runtime }}
+          path: ./artifact
+
+      - name: "Setup ExeBundle"
+        run: winget install fmuecke.ExeBundle
+
+      - name: "Pack"
+        run: |
+          cd artifact
+          ExeBundle -e NumTag.exe -o NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe -a
+
+      - name: "Upload Bundle"
+        uses: actions/upload-artifact@v7.0.0
+        with:
+          path: artifact/NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe
+          archive: false
+
+  upload:
+    name: "Upload to Release"
+    needs:
+      - build
+      - pack
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        include:
+          - runtime: win-x64
+          - runtime: win-arm64
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Download Bundle"
+        uses: actions/download-artifact@v7.0.0
+        with:
+          name: NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe
+
+      - name: "Upload to Release"
+        uses: softprops/action-gh-release@v2.2.2
+        with:
+          files: NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
