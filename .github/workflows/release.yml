@@ -41,13 +41,11 @@ jobs:
           name: NumTag_Release_${{ matrix.runtime }}
           path: ./artifact
 
-      - name: "Setup ExeBundle"
-        run: winget install fmuecke.ExeBundle
-
       - name: "Pack"
         run: |
           cd artifact
-          ExeBundle -e NumTag.exe -o NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe -a
+          winget install fmuecke.ExeBundle --include-unknown --accept-package-agreements --accept-source-agreements
+          exebundle -e NumTag.exe -o NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe -a
 
       - name: "Upload Bundle"
         uses: actions/upload-artifact@v7.0.0
@@ -56,7 +54,7 @@ jobs:
           archive: false
 
   upload:
-    name: "Upload to Release"
+    name: "Upload"
     needs:
       - build
       - pack
