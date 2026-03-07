@@ -1,0 +1,27 @@
+﻿name: "Build (CI)"
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch: 
+
+jobs:
+  ci:
+    strategy:
+      matrix:
+        include:
+          - runtime: win-x64
+          - runtime: win-arm64
+      fail-fast: true
+    uses: ./.github/workflows/reusable.yml
+    with:
+      config: Debug
+      runtime: ${{ matrix.runtime }}
+      archive: false
+    secrets: inherit
