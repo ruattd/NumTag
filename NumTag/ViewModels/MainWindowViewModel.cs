@@ -1,7 +1,6 @@
 ﻿using System;
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Xaml.Behaviors.SourceGenerators;
 
 namespace NumTag.ViewModels;
 
@@ -19,7 +18,6 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private Brush _background = new SolidColorBrush(Colors.Black);
     [ObservableProperty] private bool _windowVisible = false;
 
-    [GenerateTypedAction]
     internal void OnInitialized()
     {
         // TODO check config: start visible
@@ -28,7 +26,6 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private long _lastClickTick = 0;
 
-    [GenerateTypedAction]
     internal void OnClickBackground()
     {
         var thisClickTick = Environment.TickCount64;

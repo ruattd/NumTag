@@ -15,25 +15,14 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Interaction.Behaviors>
-        <EventTriggerBehavior EventName="Initialized">
-            <vm:OnInitializedAction TargetObject="{Binding}"/>
-        </EventTriggerBehavior>
-    </Interaction.Behaviors>
-
     <Grid Background="{Binding Background}">
-        <Interaction.Behaviors>
-            <EventTriggerBehavior EventName="PointerPressed">
-                <vm:OnClickBackgroundAction TargetObject="{Binding}"/>
-            </EventTriggerBehavior>
-        </Interaction.Behaviors>
         <Grid.RowDefinitions>
             <RowDefinition SharedSizeGroup="Hint"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto" SharedSizeGroup="Hint"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="{Binding Subtitle}" FontSize="{Binding SubtitleTextSize}" Foreground="{Binding Foreground}" DockPanel.Dock="Bottom"/>
+            <TextBlock Margin="20" Text="{Binding Subtitle}" FontSize="{Binding SubtitleTextSize}" Foreground="{Binding Foreground}" DockPanel.Dock="Bottom"/>
             <TextBlock Text="{Binding Title}" FontSize="{Binding TitleTextSize}" Foreground="{Binding Foreground}"/>
         </DockPanel>
         <TextBlock Grid.Row="2" Text="{Binding Hint}" FontSize="{Binding HintTextSize}" HorizontalAlignment="Center"/>

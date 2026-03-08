@@ -7,7 +7,15 @@ public partial class MainWindow : BaseWindow
 {
     public MainWindow()
     {
-        DataContext = new MainWindowViewModel();
+        // create view model
+        var vm = new MainWindowViewModel();
+        DataContext = vm;
+
+        // register window events
+        Initialized += (_, _) => vm.OnInitialized();
+        PointerReleased += (_, _) => vm.OnClickBackground();
+
+        // load component
         InitializeComponent();
     }
 }
