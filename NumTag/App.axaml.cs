@@ -7,17 +7,23 @@ using System.Linq;
 using Avalonia.Markup.Xaml;
 using NumTag.Views;
 using System.Diagnostics.CodeAnalysis;
+using Avalonia.Threading;
 
 namespace NumTag;
 
-public partial class App : Application
+public class App : Application
 {
+    public static MainWindow? DesktopMainWindow { get; private set; }
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
     }
 
-    public static MainWindow? DesktopMainWindow { get; private set; }
+    public static void Shutdown()
+    {
+        Dispatcher.UIThread.BeginInvokeShutdown(DispatcherPriority.Send);
+    }
 
     public override void OnFrameworkInitializationCompleted()
     {
@@ -47,8 +53,18 @@ public partial class App : Application
         }
     }
 
-    private void TrayIcon_OnClicked(object? sender, EventArgs e)
+    private void MenuItemVisibility_OnClicked(object? sender, EventArgs e)
     {
         DesktopMainWindow?.FlipVisibility();
+    }
+
+    private void MenuItemExit_OnClick(object? sender, EventArgs e)
+    {
+        Shutdown();
+    }
+
+    private void MenuItemSettings_OnClick(object? sender, EventArgs e)
+    {
+        // TODO
     }
 }
