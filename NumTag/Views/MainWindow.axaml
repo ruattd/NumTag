@@ -17,15 +17,17 @@
 
     <Grid Background="{Binding Background}">
         <Grid.RowDefinitions>
-            <RowDefinition SharedSizeGroup="Hint"/>
+            <RowDefinition Height="Auto" SharedSizeGroup="Hint"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto" SharedSizeGroup="Hint"/>
         </Grid.RowDefinitions>
-        <DockPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Margin="20" Text="{Binding Subtitle}" FontSize="{Binding SubtitleTextSize}" Foreground="{Binding Foreground}" DockPanel.Dock="Bottom"/>
-            <TextBlock Text="{Binding Title}" FontSize="{Binding TitleTextSize}" Foreground="{Binding Foreground}"/>
-        </DockPanel>
-        <TextBlock Grid.Row="2" Text="{Binding Hint}" FontSize="{Binding HintTextSize}" HorizontalAlignment="Center"/>
+        <Grid Grid.Row="1" Margin="20">
+            <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Margin="20" Text="{Binding Subtitle}" FontSize="{Binding SubtitleTextSize}" Foreground="{Binding Foreground}" DockPanel.Dock="Bottom" TextAlignment="Center"/>
+                <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="{Binding TitleTextSize}" Foreground="{Binding Foreground}" TextAlignment="Center"/>
+            </DockPanel>
+        </Grid>
+        <TextBlock Grid.Row="2" Margin="10" Text="{Binding Hint}" FontSize="{Binding HintTextSize}" Foreground="{Binding HintForeground}" HorizontalAlignment="Center"/>
     </Grid>
 
 </controls:BaseWindow>
