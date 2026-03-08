@@ -8,6 +8,7 @@ using Avalonia.Markup.Xaml;
 using NumTag.Views;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Threading;
+using NumTag.Models;
 
 namespace NumTag;
 
@@ -15,14 +16,16 @@ public class App : Application
 {
     public static MainWindow? DesktopMainWindow { get; private set; }
 
-    public override void Initialize()
-    {
-        AvaloniaXamlLoader.Load(this);
-    }
+    public static Settings Settings;
 
     public static void Shutdown()
     {
         Dispatcher.UIThread.BeginInvokeShutdown(DispatcherPriority.Send);
+    }
+
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
     }
 
     public override void OnFrameworkInitializationCompleted()

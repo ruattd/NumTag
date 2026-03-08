@@ -12,7 +12,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty] private double _titleTextSize = 96;
     [ObservableProperty] private string _subtitle = "Loading subtitle";
     [ObservableProperty] private double _subtitleTextSize = 32;
-    [ObservableProperty] private string _hint = "双击空白处关闭";
+    [ObservableProperty] private string _hint = "Put the hint on this text area.";
     [ObservableProperty] private double _hintTextSize = 16;
     [ObservableProperty] private Brush _foreground = new SolidColorBrush(Colors.White);
     [ObservableProperty] private Brush _hintForeground = new SolidColorBrush(Colors.LightGray);

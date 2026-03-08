@@ -27,7 +27,6 @@
 
     <!-- Directory options -->
     <ItemGroup>
-        <Folder Include="Models\"/>
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
 
