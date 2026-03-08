@@ -1,9 +1,10 @@
+using System;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using System.Linq;
 using Avalonia.Markup.Xaml;
-using NumTag.ViewModels;
 using NumTag.Views;
 using System.Diagnostics.CodeAnalysis;
 
@@ -16,6 +17,8 @@ public partial class App : Application
         AvaloniaXamlLoader.Load(this);
     }
 
+    public static MainWindow? DesktopMainWindow { get; private set; }
+
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
@@ -23,10 +26,8 @@ public partial class App : Application
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainWindowViewModel(),
-            };
+            desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            DesktopMainWindow = new MainWindow();
         }
 
         base.OnFrameworkInitializationCompleted();
@@ -44,5 +45,10 @@ public partial class App : Application
         {
             BindingPlugins.DataValidators.Remove(plugin);
         }
+    }
+
+    private void TrayIcon_OnClicked(object? sender, EventArgs e)
+    {
+        DesktopMainWindow?.FlipVisibility();
     }
 }

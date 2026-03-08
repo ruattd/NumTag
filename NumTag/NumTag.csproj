@@ -43,5 +43,7 @@
             <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1"/>
+        <PackageReference Include="Xaml.Behaviors.Avalonia" Version="11.3.9.5"/>
+        <PackageReference Include="Xaml.Behaviors.SourceGenerators" Version="11.3.9.5"/>
     </ItemGroup>
 </Project>

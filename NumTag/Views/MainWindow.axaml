@@ -1,20 +1,42 @@
-<Window xmlns="https://github.com/avaloniaui"
+<controls:BaseWindow x:Class="NumTag.Views.MainWindow"
+        xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:NumTag.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:NumTag.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="NumTag.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="NumTag">
+        Icon="/Assets/logo.ico" Title="NumTag"
+        ShowInTaskbar="False" Topmost="True" WindowState="FullScreen"
+        ShowActivated="True" WindowVisible="{Binding WindowVisible}">
 
     <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+    <Interaction.Behaviors>
+        <EventTriggerBehavior EventName="Initialized">
+            <vm:OnInitializedAction TargetObject="{Binding}"/>
+        </EventTriggerBehavior>
+    </Interaction.Behaviors>
 
-</Window>
+    <Grid Background="{Binding Background}">
+        <Interaction.Behaviors>
+            <EventTriggerBehavior EventName="PointerPressed">
+                <vm:OnClickBackgroundAction TargetObject="{Binding}"/>
+            </EventTriggerBehavior>
+        </Interaction.Behaviors>
+        <Grid.RowDefinitions>
+            <RowDefinition SharedSizeGroup="Hint"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" SharedSizeGroup="Hint"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="{Binding Subtitle}" FontSize="{Binding SubtitleTextSize}" Foreground="{Binding Foreground}" DockPanel.Dock="Bottom"/>
+            <TextBlock Text="{Binding Title}" FontSize="{Binding TitleTextSize}" Foreground="{Binding Foreground}"/>
+        </DockPanel>
+        <TextBlock Grid.Row="2" Text="{Binding Hint}" FontSize="{Binding HintTextSize}" HorizontalAlignment="Center"/>
+    </Grid>
+
+</controls:BaseWindow>
