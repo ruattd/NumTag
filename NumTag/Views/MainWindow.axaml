@@ -15,7 +15,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Grid Background="{Binding Background}">
+    <Grid Background="{Binding Behavior.Background}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" SharedSizeGroup="Hint"/>
             <RowDefinition Height="*"/>
@@ -23,11 +23,11 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="1" Margin="20">
             <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Margin="20" Text="{Binding Subtitle}" FontSize="{Binding SubtitleTextSize}" Foreground="{Binding Foreground}" DockPanel.Dock="Bottom" TextAlignment="Center"/>
-                <TextBlock Text="{Binding Title}" FontWeight="Bold" FontSize="{Binding TitleTextSize}" Foreground="{Binding Foreground}" TextAlignment="Center"/>
+                <TextBlock Margin="20" Text="{Binding Behavior.Subtitle}" FontSize="{Binding Behavior.SubtitleTextSize}" Foreground="{Binding Behavior.Foreground}" DockPanel.Dock="Bottom" TextAlignment="Center"/>
+                <TextBlock Text="{Binding Behavior.Title}" FontWeight="Bold" FontSize="{Binding Behavior.TitleTextSize}" Foreground="{Binding Behavior.Foreground}" TextAlignment="Center"/>
             </DockPanel>
         </Grid>
-        <TextBlock Grid.Row="2" Margin="10" Text="{Binding Hint}" FontSize="{Binding HintTextSize}" Foreground="{Binding HintForeground}" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Margin="10" Text="{Binding Behavior.Hint}" FontSize="{Binding Behavior.HintTextSize}" Foreground="{Binding Behavior.HintForeground}" HorizontalAlignment="Center"/>
     </Grid>
 
 </controls:BaseWindow>

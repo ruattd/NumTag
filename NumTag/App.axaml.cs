@@ -6,7 +6,9 @@ using Avalonia.Markup.Xaml;
 using NumTag.Views;
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Threading;
+using NumTag.Core.States;
 using NumTag.Models;
+using NumTag.ViewModels;
 
 namespace NumTag;
 
@@ -18,7 +20,7 @@ public class App : Application
         private set;
     }
 
-    public static Settings Settings;
+    public static Settings Settings { get; }
 
     public static void Shutdown()
     {
@@ -38,7 +40,7 @@ public class App : Application
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
-            DesktopMainWindow = new MainWindow();
+            DesktopMainWindow = new MainWindow(new MainWindowViewModel { Behavior = new BehaviorState(Settings.MergedBehavior()) });
         }
 
         base.OnFrameworkInitializationCompleted();

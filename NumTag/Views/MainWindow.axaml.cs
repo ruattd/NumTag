@@ -7,10 +7,10 @@ namespace NumTag.Views;
 public partial class MainWindow : BaseWindow
 {
     public MainWindowViewModel ViewModel { get; }
-    public MainWindow()
+
+    public MainWindow(MainWindowViewModel vm)
     {
-        // create view model
-        var vm = new MainWindowViewModel();
+        // apply view model
         DataContext = ViewModel = vm;
 
         // register window events
