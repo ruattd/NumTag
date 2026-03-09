@@ -20,7 +20,7 @@ public class App : Application
         private set;
     }
 
-    public static Settings Settings { get; }
+    public static Settings Settings { get; } = Settings.Read();
 
     public static void Shutdown()
     {
@@ -72,6 +72,6 @@ public class App : Application
 
     private void MenuItemSettings_OnClick(object? sender, EventArgs e)
     {
-        // TODO
+        DesktopMainWindow.ViewModel.OpenSettings(DesktopMainWindow);
     }
 }

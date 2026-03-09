@@ -1,5 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia.Controls;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using NumTag.Core.ViewModels;
+using NumTag.Views;
 
 namespace NumTag.ViewModels;
 
@@ -33,5 +36,14 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         // TODO check config: double click to close window
         WindowVisible = false;
+    }
+
+    [RelayCommand]
+    public void OpenSettings(WindowBase? owner = null)
+    {
+        _ = new SettingsWindow(new SettingsWindowViewModel { Behavior = Behavior }, owner)
+        {
+            WindowVisible = true
+        };
     }
 }

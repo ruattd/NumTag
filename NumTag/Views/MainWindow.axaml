@@ -21,13 +21,32 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto" SharedSizeGroup="Hint"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1" Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="SettingsButton"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto" SharedSizeGroup="SettingsButton"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="20">
             <DockPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-                <TextBlock Margin="20" Text="{Binding Behavior.Subtitle}" FontSize="{Binding Behavior.SubtitleTextSize}" Foreground="{Binding Behavior.Foreground}" DockPanel.Dock="Bottom" TextAlignment="Center"/>
-                <TextBlock Text="{Binding Behavior.Title}" FontWeight="Bold" FontSize="{Binding Behavior.TitleTextSize}" Foreground="{Binding Behavior.Foreground}" TextAlignment="Center"/>
+                <TextBlock DockPanel.Dock="Bottom" Margin="20"
+                        Text="{Binding Behavior.Subtitle}" TextAlignment="Center"
+                        FontSize="{Binding Behavior.SubtitleTextSize}"
+                        Foreground="{Binding Behavior.Foreground}"/>
+                <TextBlock Text="{Binding Behavior.Title}" TextAlignment="Center"
+                        FontSize="{Binding Behavior.TitleTextSize}" FontWeight="Bold"
+                        Foreground="{Binding Behavior.Foreground}"/>
             </DockPanel>
-        </Grid>
-        <TextBlock Grid.Row="2" Margin="10" Text="{Binding Behavior.Hint}" FontSize="{Binding Behavior.HintTextSize}" Foreground="{Binding Behavior.HintForeground}" HorizontalAlignment="Center"/>
+        </Border>
+
+        <TextBlock Grid.Row="2" Grid.Column="1" Margin="10" HorizontalAlignment="Center"
+                Text="{Binding Behavior.Hint}" TextAlignment="Center"
+                FontSize="{Binding Behavior.HintTextSize}"
+                Foreground="{Binding Behavior.HintForeground}"/>
+
+        <Button Grid.Row="2" Grid.Column="2" Width="20"
+                Command="{Binding OpenSettingsCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=controls:BaseWindow}}"/>
     </Grid>
 
 </controls:BaseWindow>
