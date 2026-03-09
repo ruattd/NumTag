@@ -1,9 +1,7 @@
-using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
-using System.Linq;
 using Avalonia.Markup.Xaml;
 using NumTag.Views;
 using System.Diagnostics.CodeAnalysis;
@@ -14,7 +12,11 @@ namespace NumTag;
 
 public class App : Application
 {
-    public static MainWindow? DesktopMainWindow { get; private set; }
+    public static MainWindow DesktopMainWindow
+    {
+        get => field ?? throw new InvalidOperationException("Not initialized");
+        private set;
+    }
 
     public static Settings Settings;
 
@@ -58,7 +60,7 @@ public class App : Application
 
     private void MenuItemVisibility_OnClicked(object? sender, EventArgs e)
     {
-        DesktopMainWindow?.FlipVisibility();
+        DesktopMainWindow.FlipVisibility();
     }
 
     private void MenuItemExit_OnClick(object? sender, EventArgs e)

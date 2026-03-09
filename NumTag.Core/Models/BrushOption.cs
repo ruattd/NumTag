@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Avalonia;
 using Avalonia.Media;
 
-namespace NumTag.Models;
+namespace NumTag.Core.Models;
 
 public enum BrushKind
 {

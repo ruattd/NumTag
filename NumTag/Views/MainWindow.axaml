@@ -7,7 +7,7 @@
         xmlns:controls="clr-namespace:NumTag.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/logo.ico" Title="NumTag"
+        Icon="/Assets/logo.ico" Title="NumTag" Closing="Window_OnClosing"
         ShowInTaskbar="False" Topmost="True" WindowState="FullScreen"
         ShowActivated="True" WindowVisible="{Binding WindowVisible}">
 
