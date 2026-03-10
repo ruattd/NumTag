@@ -43,6 +43,7 @@ public record Settings(
     };
 
     [UnconditionalSuppressMessage("Trimming", "IL2026")]
+    [UnconditionalSuppressMessage("AOT", "IL3050")]
     private static string SerializeSettings<TSettings>(TSettings obj)
         where TSettings : class
     {
@@ -50,6 +51,7 @@ public record Settings(
     }
 
     [UnconditionalSuppressMessage("Trimming", "IL2026")]
+    [UnconditionalSuppressMessage("AOT", "IL3050")]
     private static TSettings? DeserializeSettings<TSettings>(string json)
         where TSettings : class
     {

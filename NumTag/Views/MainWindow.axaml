@@ -44,7 +44,7 @@
                 FontSize="{Binding Behavior.HintTextSize}"
                 Foreground="{Binding Behavior.HintForeground}"/>
 
-        <Button Grid.Row="2" Grid.Column="2" Width="20"
+        <Button Grid.Row="2" Grid.Column="2" Width="20" Height="20"
                 Command="{Binding OpenSettingsCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=controls:BaseWindow}}"/>
     </Grid>

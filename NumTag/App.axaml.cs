@@ -40,6 +40,12 @@ public class App : Application
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
             desktop.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            Dispatcher.UIThread.UnhandledException += (_, e) =>
+            {
+                Program.OnUnhandledException(e.Exception);
+                // continue executing
+                e.Handled = true;
+            };
             DesktopMainWindow = new MainWindow(new MainWindowViewModel { Behavior = new BehaviorState(Settings.MergedBehavior()) });
         }
 
