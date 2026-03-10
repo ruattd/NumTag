@@ -19,7 +19,7 @@ public record Settings(
     {
         const string rootDirectory = "NumTag";
         BaseDirectory = OperatingSystem.IsWindows()
-            ? Path.Combine(Environment.ProcessPath ?? Environment.CurrentDirectory, rootDirectory)
+            ? Path.Combine(Path.GetDirectoryName(Environment.ProcessPath) ?? Environment.CurrentDirectory, rootDirectory)
             : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), rootDirectory);
         ConfigPath = Path.Combine(BaseDirectory, "config.json");
         BehaviorDirectory = Path.Combine(BaseDirectory, "behaviors");
@@ -43,36 +43,55 @@ public record Settings(
     };
 
     [UnconditionalSuppressMessage("Trimming", "IL2026")]
-    public void Write(string? behaviorSlot = null)
+    private static string SerializeSettings<TSettings>(TSettings obj)
+        where TSettings : class
     {
-        var configPath = behaviorSlot == null ? ConfigPath : Path.Combine(BehaviorDirectory, behaviorSlot + ".json");
-        using var configFile = File.Open(configPath, FileMode.Create, FileAccess.Write, FileShare.Read);
-        if (behaviorSlot == null) JsonSerializer.Serialize(configFile, this, DefaultOptions);
-        else JsonSerializer.Serialize(configFile, BehaviorSlots[behaviorSlot], DefaultOptions);
+        return JsonSerializer.Serialize(obj, DefaultOptions);
     }
 
     [UnconditionalSuppressMessage("Trimming", "IL2026")]
+    private static TSettings? DeserializeSettings<TSettings>(string json)
+        where TSettings : class
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<TSettings>(json, DefaultOptions)
+                ?? throw new JsonException("Empty (null) value");
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine("Exception thrown while deserializing config");
+            Console.Error.WriteLine(ex);
+            return null;
+        }
+    }
+
+    public void Write(string? behaviorSlot = null)
+    {
+        var configPath = behaviorSlot == null ? ConfigPath : Path.Combine(BehaviorDirectory, behaviorSlot + ".json");
+        var json = behaviorSlot == null ? SerializeSettings(this) : SerializeSettings(BehaviorSlots[behaviorSlot]);
+        File.WriteAllText(configPath, json);
+    }
+
     public static Settings Read()
     {
         Directory.CreateDirectory(BaseDirectory);
         Directory.CreateDirectory(BehaviorDirectory);
-        // try read behaviors
+        // read behaviors
         foreach (var path in Directory.EnumerateFiles(BehaviorDirectory))
         {
             var ext = Path.GetExtension(path).ToLowerInvariant();
             if (ext != "json") continue;
             var slot = Path.GetFileNameWithoutExtension(path);
-            using var file = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            var behavior = JsonSerializer.Deserialize<BehaviorSettings>(file, DefaultOptions);
-            BehaviorSlots[slot] = behavior;
+            var behavior = DeserializeSettings<BehaviorSettings>(File.ReadAllText(path));
+            BehaviorSlots[slot] = behavior ?? new BehaviorSettings();
         }
         Settings? settings = null;
         // try read existed config
         if (File.Exists(ConfigPath))
         {
             var json = File.ReadAllText(ConfigPath);
-            if (!string.IsNullOrWhiteSpace(json)) settings = JsonSerializer
-                .Deserialize<Settings>(json, DefaultOptions) ?? throw new JsonException("Empty (null) value");
+            if (!string.IsNullOrWhiteSpace(json)) settings = DeserializeSettings<Settings>(json);
         }
         // create new file
         if (settings == null)

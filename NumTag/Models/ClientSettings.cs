@@ -1,6 +1,6 @@
 ﻿namespace NumTag.Models;
 
-public record struct ClientSettings(
+public record ClientSettings(
     int ClientId = 0,
     string ServerAddress = ""
 );

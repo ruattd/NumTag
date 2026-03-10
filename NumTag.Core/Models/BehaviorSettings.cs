@@ -1,6 +1,6 @@
 ﻿namespace NumTag.Core.Models;
 
-public readonly record struct BehaviorSettings(
+public record BehaviorSettings(
     string Title = "Title",
     double TitleTextSize = 96,
     string Subtitle = "Subtitle",
