@@ -14,18 +14,30 @@ namespace NumTag;
 
 public class App : Application
 {
+    /// <summary>
+    /// The main window in desktop environment.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Not initialized</exception>
     public static MainWindow DesktopMainWindow
     {
         get => field ?? throw new InvalidOperationException("Not initialized");
         private set;
     }
 
+    /// <summary>
+    /// Global settings.
+    /// </summary>
     public static Settings Settings { get; } = Settings.Read();
 
+    /// <summary>
+    /// Start shutdown the program.
+    /// </summary>
     public static void Shutdown()
     {
         Dispatcher.UIThread.BeginInvokeShutdown(DispatcherPriority.Send);
     }
+
+    /* Framework Implementations */
 
     public override void Initialize()
     {
@@ -66,16 +78,19 @@ public class App : Application
         }
     }
 
+    // visibility switch
     private void MenuItemVisibility_OnClicked(object? sender, EventArgs e)
     {
         DesktopMainWindow.FlipVisibility();
     }
 
+    // exit
     private void MenuItemExit_OnClick(object? sender, EventArgs e)
     {
         Shutdown();
     }
 
+    // open settings
     private void MenuItemSettings_OnClick(object? sender, EventArgs e)
     {
         DesktopMainWindow.ViewModel.OpenSettings(DesktopMainWindow);
