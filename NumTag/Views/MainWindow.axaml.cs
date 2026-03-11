@@ -16,6 +16,7 @@ public partial class MainWindow : BaseWindow
         // register window events
         Initialized += (_, _) => vm.OnInitialized();
         PointerReleased += (_, _) => vm.OnClickBackground();
+        KeyUp += (_, e) => vm.OnKeyUp(this, e);
 
         // load component
         InitializeComponent();

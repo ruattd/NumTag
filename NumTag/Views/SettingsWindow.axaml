@@ -4,8 +4,49 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:NumTag.Controls"
+        xmlns:vm="clr-namespace:NumTag.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        Title="选项">
-    <Grid>
-    </Grid>
+        x:DataType="vm:SettingsWindowViewModel"
+        Title="选项" Width="500" Height="320" Icon="/Assets/logo.ico"
+        WindowStartupLocation="CenterScreen">
+
+    <controls:BaseWindow.Resources>
+        <Thickness x:Key="GlobalMargin">5</Thickness>
+    </controls:BaseWindow.Resources>
+
+    <controls:BaseWindow.Styles>
+        <Style Selector="TextBlock">
+            <Setter Property="Margin" Value="{StaticResource GlobalMargin}"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Margin" Value="{StaticResource GlobalMargin}"/>
+            <Setter Property="MaxLines" Value="1"/>
+            <Setter Property="AcceptsReturn" Value="False"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Button">
+            <Setter Property="Margin" Value="{StaticResource GlobalMargin}"/>
+        </Style>
+    </controls:BaseWindow.Styles>
+
+    <DockPanel>
+        <Grid ColumnDefinitions="*,Auto,Auto" DockPanel.Dock="Bottom" Background="#2888">
+            <Button Grid.Column="1" Content="保存"/>
+            <Button Grid.Column="2" Content="取消"/>
+        </Grid>
+        <Grid Margin="5" RowDefinitions="40,40" ColumnDefinitions="Auto,*,Auto,60">
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="标题"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Behavior.Title}"/>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="字号"/>
+            <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Behavior.TitleTextSize}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="副标题"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Behavior.Subtitle}"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="字号"/>
+            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Behavior.SubtitleTextSize}"/>
+        </Grid>
+    </DockPanel>
+
 </controls:BaseWindow>

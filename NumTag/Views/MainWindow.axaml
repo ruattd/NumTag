@@ -8,7 +8,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/logo.ico" Title="NumTag" Closing="Window_OnClosing"
-        ShowInTaskbar="False" Topmost="True" WindowState="FullScreen"
+        SystemDecorations="None" WindowState="FullScreen"
         ShowActivated="True" WindowVisible="{Binding WindowVisible}">
 
     <Design.DataContext>
@@ -22,9 +22,9 @@
             <RowDefinition Height="Auto" SharedSizeGroup="Hint"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" SharedSizeGroup="SettingsButton"/>
+            <ColumnDefinition Width="40"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto" SharedSizeGroup="SettingsButton"/>
+            <ColumnDefinition Width="40"/>
         </Grid.ColumnDefinitions>
 
         <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="20">
@@ -44,9 +44,10 @@
                 FontSize="{Binding Behavior.HintTextSize}"
                 Foreground="{Binding Behavior.HintForeground}"/>
 
-        <Button Grid.Row="2" Grid.Column="2" Width="20" Height="20"
-                Command="{Binding OpenSettingsCommand}"
-                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=controls:BaseWindow}}"/>
+        <Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Command="{Binding OpenSettingsCommand}" CornerRadius="0"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=controls:BaseWindow}}"
+                Background="Transparent" Content=" " BorderThickness="1" BorderBrush="Transparent"/>
     </Grid>
 
 </controls:BaseWindow>

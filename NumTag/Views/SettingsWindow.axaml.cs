@@ -13,10 +13,14 @@ public partial class SettingsWindow : BaseWindow
         // apply view model
         DataContext = ViewModel = vm;
 
-        // set basic props
-        if (owner != null) Owner = owner;
-
         // load component
         InitializeComponent();
+
+        // set basic props
+        if (owner != null)
+        {
+            Owner = owner;
+            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        }
     }
 }
