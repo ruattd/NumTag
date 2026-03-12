@@ -35,6 +35,9 @@ jobs:
           - runtime: win-arm64
     runs-on: windows-latest
     steps:
+      - name: "Checkout"
+        uses: actions/checkout@v6.0.2
+
       - name: "Download Artifact"
         uses: actions/download-artifact@v7.0.0
         with:
@@ -45,16 +48,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+          cache: npm
 
-      - name: "Setup EVB Dependencies"
-        run: npm install -g enigmavirtualbox@0.9.10
+      - name: "Prepare Dependencies"
+        run: npm install
 
       - name: "Pack"
-        run: |
-          cd artifact
-          npx enigmavirtualbox gen app.evb NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe `
-            NumTag.exe av_libglesv2.dll libHarfBuzzSharp.dll libSkiaSharp.dll
-          npx enigmavirtualbox cli app.evb
+        run: npm run pack artifact NumTag.exe NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe
 
       - name: "Upload Bundle"
         uses: actions/upload-artifact@v7.0.0

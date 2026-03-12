@@ -1,0 +1,12 @@
+{
+  "name": "numtag",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "pack": "node tools/pack.js"
+  },
+  "dependencies": {
+    "enigmavirtualbox": "^0.9.10",
+    "generate-evb": "^1.0.3"
+  }
+}
