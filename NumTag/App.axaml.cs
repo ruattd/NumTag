@@ -27,7 +27,11 @@ public class App : Application
     /// <summary>
     /// Global settings.
     /// </summary>
-    public static Settings Settings { get; } = Settings.Read();
+    public static Settings Settings
+    {
+        get => field ?? throw new InvalidOperationException("Not initialized");
+        private set;
+    }
 
     /// <summary>
     /// Start shutdown the program.
@@ -41,6 +45,7 @@ public class App : Application
 
     public override void Initialize()
     {
+        Settings = Settings.Read();
         AvaloniaXamlLoader.Load(this);
     }
 
