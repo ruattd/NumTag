@@ -32,7 +32,6 @@ jobs:
       matrix:
         include:
           - runtime: win-x64
-          - runtime: win-arm64
     runs-on: windows-latest
     steps:
       - name: "Checkout"
@@ -73,7 +72,6 @@ jobs:
       matrix:
         include:
           - runtime: win-x64
-          - runtime: win-arm64
     runs-on: ubuntu-latest
     steps:
       - name: "Download Bundle"
