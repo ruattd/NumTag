@@ -10,14 +10,16 @@ public partial class SettingsWindowViewModel : ViewModelBase
     [RelayCommand]
     public void Save()
     {
-        // TODO write vm value to settings
+        
+        App.Settings.SaveAsCurrentBehavior(Behavior.ToSettings());
         App.Settings.Write();
         CloseWindow?.Invoke();
     }
 
+    [RelayCommand]
     public void Cancel()
     {
-        // TODO restore vm value
+        Behavior.LoadSettings(App.Settings.MergedBehavior());
         CloseWindow?.Invoke();
     }
 }

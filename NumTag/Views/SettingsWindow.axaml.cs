@@ -13,6 +13,9 @@ public partial class SettingsWindow : BaseWindow
         // apply view model
         DataContext = ViewModel = vm;
 
+        // register events
+        vm.CloseWindow += Close;
+
         // load component
         InitializeComponent();
 

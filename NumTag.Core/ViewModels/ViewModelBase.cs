@@ -3,7 +3,8 @@ using NumTag.Core.States;
 
 namespace NumTag.Core.ViewModels;
 
-public abstract class ViewModelBase : ObservableObject
+public abstract partial class ViewModelBase : ObservableObject
 {
-    public required BehaviorState Behavior { get; init; }
+    [ObservableProperty]
+    private BehaviorState _behavior = new();
 }
