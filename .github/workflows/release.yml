@@ -41,14 +41,21 @@ jobs:
           name: NumTag_Release_${{ matrix.runtime }}
           path: ./artifact
 
-      - name: "Setup ExeBundle"
-        run: winget install fmuecke.ExeBundle --include-unknown --accept-package-agreements --accept-source-agreements
+      - name: "Setup Node"
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: "Setup EVB Dependencies"
+        run: npm install -g enigmavirtualbox@0.9.10
 
       - name: "Pack"
         run: |
-          $u='https://github.com/badrelmers/RefrEnv/raw/refs/heads/main/refrenv.ps1'; $p=Join-Path $env:TEMP 'refrenv.ps1'; Invoke-WebRequest -Uri $u -OutFile $p; Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force; . $p
           cd artifact
-          exebundle -e NumTag.exe -o NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe -a
+          npx enigmavirtualbox gen app.evb NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe `
+            NumTag.exe av_libglesv2.dll libHarfBuzzSharp.dll libSkiaSharp.dll
+          npx enigmavirtualbox cli app.evb
 
       - name: "Upload Bundle"
         uses: actions/upload-artifact@v7.0.0
