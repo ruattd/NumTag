@@ -45,7 +45,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: npm
 
       - name: "Setup EVB Dependencies"
         run: npm install -g enigmavirtualbox@0.9.10
@@ -83,7 +82,7 @@ jobs:
           name: NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe
 
       - name: "Upload to Release"
-        uses: softprops/action-gh-release@v2.2.2
+        uses: softprops/action-gh-release@v2.5.0
         with:
           files: NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe
         env:
