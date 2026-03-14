@@ -14,7 +14,8 @@ public partial class SettingsWindow : BaseWindow
         DataContext = ViewModel = vm;
 
         // register events
-        vm.CloseWindow += Close;
+        ViewModel.CloseWindow += Close;
+        KeyUp += (_, e) => ViewModel.OnKeyUp(this, e);
 
         // load component
         InitializeComponent();

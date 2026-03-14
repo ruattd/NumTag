@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:NumTag.Controls"
         xmlns:vm="clr-namespace:NumTag.ViewModels"
+        xmlns:v="clr-namespace:NumTag.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:DataType="vm:SettingsWindowViewModel"
         Title="选项" Width="500" Height="320" Icon="/Assets/logo.ico"
@@ -15,7 +16,7 @@
     </controls:BaseWindow.Resources>
 
     <controls:BaseWindow.Styles>
-        <Style Selector="TextBlock">
+        <Style Selector="TextBlock.Label">
             <Setter Property="Margin" Value="{StaticResource GlobalMargin}"/>
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -39,38 +40,53 @@
     <DockPanel>
         <Border DockPanel.Dock="Bottom" Background="#2888">
             <Grid Margin="{StaticResource GlobalMargin}"
-                    ColumnDefinitions="*,Auto,Auto">
-                <TextBlock Grid.Column="0" Text="NumTag"/>
-                <Button Grid.Column="1" Content="保存" Command="{Binding SaveCommand}"/>
-                <Button Grid.Column="2" Content="取消" Command="{Binding CancelCommand}"/>
+                    ColumnDefinitions="Auto,Auto,*,Auto,Auto">
+                <TextBlock Grid.Column="0" Text="NumTag" Classes="Label"/>
+                <ComboBox Grid.Column="1" VerticalAlignment="Center" Margin="{StaticResource GlobalMargin}"
+                        ItemsSource="{Binding BehaviorSlots}" SelectedValue="{Binding CurrentBehaviorSlot}"
+                        MinWidth="100" ToolTip.Tip="选择当前使用和编辑的 Slot">
+                    <ComboBox.SelectionBoxItemTemplate><DataTemplate>
+                        <TextBlock Text="{Binding}"/>
+                    </DataTemplate></ComboBox.SelectionBoxItemTemplate>
+                    <ComboBox.ItemTemplate><DataTemplate>
+                        <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock Grid.Column="0" Text="{Binding}" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                            <Button Grid.Column="1" Margin="-5" Padding="5" Background="Transparent"
+                                    Command="{Binding $parent[v:SettingsWindow].ViewModel.DeleteSlotCommand}"
+                                    CommandParameter="{Binding}">
+                                <PathIcon Width="10" Height="10" Data="M10.586 12L5.293 6.707A1 1 0 0 1 6.707 5.293L12 10.586L17.293 5.293A1 1 0 0 1 18.707 6.707L13.414 12L18.707 17.293A1 1 0 0 1 17.293 18.707L12 13.414L6.707 18.707A1 1 0 0 1 5.293 17.293L10.586 12Z"/>
+                            </Button>
+                        </Grid>
+                    </DataTemplate></ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button Grid.Column="3" Content="保存" Command="{Binding SaveAndCloseCommand}"/>
+                <Button Grid.Column="4" Content="取消" Command="{Binding CancelAndCloseCommand}"/>
             </Grid>
         </Border>
-        <ScrollViewer>
-            <Grid Margin="{StaticResource GlobalMargin}"
-                    RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,60">
-                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Classes="Title" Text="内容"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="标题"/>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Behavior.Title}"/>
-                <TextBlock Grid.Row="1" Grid.Column="2" Text="字号"/>
-                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Behavior.TitleTextSize}"/>
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="副标题"/>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Behavior.Subtitle}"/>
-                <TextBlock Grid.Row="2" Grid.Column="2" Text="字号"/>
-                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Behavior.SubtitleTextSize}"/>
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="提示文本"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Behavior.Hint}"/>
-                <TextBlock Grid.Row="3" Grid.Column="2" Text="字号"/>
-                <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Behavior.HintTextSize}"/>
+        <ScrollViewer><Grid Margin="{StaticResource GlobalMargin}"
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,60">
+            <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Classes="Label Title" Text="内容"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="标题" Classes="Label"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Behavior.Title}"/>
+            <TextBlock Grid.Row="1" Grid.Column="2" Text="字号" Classes="Label"/>
+            <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Behavior.TitleTextSize}"/>
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="副标题" Classes="Label"/>
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Behavior.Subtitle}"/>
+            <TextBlock Grid.Row="2" Grid.Column="2" Text="字号" Classes="Label"/>
+            <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Behavior.SubtitleTextSize}"/>
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="提示文本" Classes="Label"/>
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Behavior.Hint}"/>
+            <TextBlock Grid.Row="3" Grid.Column="2" Text="字号" Classes="Label"/>
+            <TextBox Grid.Row="3" Grid.Column="3" Text="{Binding Behavior.HintTextSize}"/>
 
-                <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Classes="Title" Text="样式"/>
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="前景色"/>
-                <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Text=""/>
-                <TextBlock Grid.Row="6" Grid.Column="0" Text="提示前景色"/>
-                <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Text=""/>
-                <TextBlock Grid.Row="7" Grid.Column="0" Text="背景色"/>
-                <TextBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Text=""/>
-            </Grid>
-        </ScrollViewer>
+            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" Classes="Label Title" Text="样式"/>
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="前景色" Classes="Label"/>
+            <TextBox Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Text=""/>
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="提示前景色" Classes="Label"/>
+            <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Text=""/>
+            <TextBlock Grid.Row="7" Grid.Column="0" Text="背景色" Classes="Label"/>
+            <TextBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Text=""/>
+        </Grid></ScrollViewer>
     </DockPanel>
 
 </controls:BaseWindow>

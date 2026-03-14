@@ -19,24 +19,27 @@ public record Settings
     {
         const string rootDirectory = "NumTag";
         BaseDirectory = OperatingSystem.IsWindows()
-            ? Path.Combine(Path.GetDirectoryName(Environment.ProcessPath) ?? Environment.CurrentDirectory, rootDirectory)
+            ? Path.Combine(Path.GetDirectoryName(Environment.ProcessPath) ?? Environment.CurrentDirectory,
+                rootDirectory)
             : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), rootDirectory);
         ConfigPath = Path.Combine(BaseDirectory, "config.json");
         BehaviorDirectory = Path.Combine(BaseDirectory, "behaviors");
     }
 
-    private static readonly Dictionary<string, BehaviorSettings> BehaviorSlots = [];
+    private static readonly Dictionary<string, BehaviorSettings> BehaviorSlotMap = [];
+
+    public static IReadOnlyCollection<string> BehaviorSlots() => BehaviorSlotMap.Keys;
 
     public BehaviorSettings MergedBehavior()
     {
         // TODO merge behavior
-        return DefaultBehavior;
+        return CurrentBehaviorSlot == null ? DefaultBehavior : BehaviorSlotMap[CurrentBehaviorSlot];
     }
 
     public void SaveAsCurrentBehavior(BehaviorSettings settings)
     {
         if (CurrentBehaviorSlot == null) DefaultBehavior = settings;
-        else BehaviorSlots[CurrentBehaviorSlot] = settings;
+        else BehaviorSlotMap[CurrentBehaviorSlot] = settings;
     }
 
     private static readonly JsonSerializerOptions DefaultOptions = new()
@@ -64,7 +67,7 @@ public record Settings
         try
         {
             return JsonSerializer.Deserialize<TSettings>(json, DefaultOptions)
-                ?? throw new JsonException("Empty (null) value");
+                   ?? throw new JsonException("Empty (null) value");
         }
         catch (Exception ex)
         {
@@ -74,14 +77,24 @@ public record Settings
         }
     }
 
+    private static string GetBehaviorSlotPath(string slot)
+    {
+        return Path.Combine(BehaviorDirectory, slot + ".json");
+    }
+
     public void Write(string? behaviorSlot = null)
     {
-        var configPath = behaviorSlot == null ? ConfigPath : Path.Combine(BehaviorDirectory, behaviorSlot + ".json");
-        var json = behaviorSlot == null ? SerializeSettings(this) : SerializeSettings(BehaviorSlots[behaviorSlot]);
+        if (behaviorSlot == null && CurrentBehaviorSlot != null) Write(CurrentBehaviorSlot);
+        var configPath = behaviorSlot == null ? ConfigPath : GetBehaviorSlotPath(behaviorSlot);
+        var json = behaviorSlot == null ? SerializeSettings(this) : SerializeSettings(BehaviorSlotMap[behaviorSlot]);
         File.WriteAllText(configPath, json);
     }
 
-    public void WriteCurrentBehavior() => Write(CurrentBehaviorSlot);
+    public static void DeleteBehaviorSlot(string behaviorSlot)
+    {
+        BehaviorSlotMap.Remove(behaviorSlot);
+        File.Delete(GetBehaviorSlotPath(behaviorSlot));
+    }
 
     public static Settings Read()
     {
@@ -94,7 +107,7 @@ public record Settings
             if (ext != "json") continue;
             var slot = Path.GetFileNameWithoutExtension(path);
             var behavior = DeserializeSettings<BehaviorSettings>(File.ReadAllText(path));
-            BehaviorSlots[slot] = behavior ?? new BehaviorSettings();
+            BehaviorSlotMap[slot] = behavior ?? new BehaviorSettings();
         }
         Settings? settings = null;
         // try read existed config

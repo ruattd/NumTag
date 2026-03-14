@@ -19,10 +19,12 @@ public partial class BehaviorState : ObservableObject
     [ObservableProperty] private Brush _foreground = DefaultForeground;
     [ObservableProperty] private Brush _hintForeground = DefaultHintForeground;
     [ObservableProperty] private Brush _background = DefaultBackground;
+    [ObservableProperty] private bool _startVisible = true;
+    [ObservableProperty] private bool _doubleClickToHideWindow = true;
 
     public BehaviorState(BehaviorSettings? settings = null)
     {
-        if (settings is { } s) LoadSettings(s);
+        if (settings != null) LoadSettings(settings);
     }
 
     public void LoadSettings(BehaviorSettings settings)
@@ -33,6 +35,8 @@ public partial class BehaviorState : ObservableObject
         SubtitleTextSize = settings.SubtitleTextSize;
         Hint = settings.Hint;
         HintTextSize = settings.HintTextSize;
+        StartVisible = settings.StartVisible;
+        DoubleClickToHideWindow = settings.DoubleClickToHideWindow;
         if (settings.Foreground == null) Foreground = DefaultForeground;
         else Foreground = settings.Foreground;
         if (settings.HintForeground == null) HintForeground = DefaultHintForeground;
@@ -58,6 +62,8 @@ public partial class BehaviorState : ObservableObject
             SubtitleTextSize = SubtitleTextSize,
             Hint = Hint,
             HintTextSize = HintTextSize,
+            StartVisible = StartVisible,
+            DoubleClickToHideWindow = DoubleClickToHideWindow,
             Foreground = foreground,
             HintForeground = hintForeground,
             Background = background,

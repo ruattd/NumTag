@@ -13,7 +13,7 @@ public class MessageBox : Window
             Text = message,
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center,
-            Margin = new Thickness(40),
+            Margin = new Thickness(24),
         };
     }
 
@@ -34,6 +34,7 @@ public class MessageBox : Window
             CanMinimize = false,
             ShowInTaskbar = false,
             SizeToContent = SizeToContent.WidthAndHeight,
+            Topmost = true,
         };
         if (owner != null)
         {

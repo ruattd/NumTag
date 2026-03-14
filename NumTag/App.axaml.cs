@@ -98,6 +98,6 @@ public class App : Application
     // open settings
     private void MenuItemSettings_OnClick(object? sender, EventArgs e)
     {
-        DesktopMainWindow.ViewModel.OpenSettings(DesktopMainWindow);
+        DesktopMainWindow.ViewModel.OpenSettingsCommand.Execute(DesktopMainWindow);
     }
 }

@@ -15,8 +15,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
     internal void OnInitialized()
     {
-        // TODO check config: start visible
-        WindowVisible = true;
+        if (Behavior.StartVisible) WindowVisible = true;
     }
 
     private long _lastMouseClickTick = 0;
@@ -33,7 +32,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private void OnDoubleClickClose()
     {
         // TODO check config: double click to close window
-        WindowVisible = false;
+        if (Behavior.DoubleClickToHideWindow) WindowVisible = false;
     }
 
     private long _lastShiftClickTick = 0;
@@ -43,13 +42,13 @@ public partial class MainWindowViewModel : ViewModelBase
         if (e.Key is Key.LeftShift or Key.RightShift)
         {
             var thisClickTick = Environment.TickCount64;
-            if (thisClickTick - _lastShiftClickTick < DoubleClickMaxLatency) OpenSettings();
+            if (thisClickTick - _lastShiftClickTick < DoubleClickMaxLatency) OpenSettings(sender);
             _lastShiftClickTick = thisClickTick;
         }
     }
 
     [RelayCommand]
-    public void OpenSettings(WindowBase? owner = null)
+    private void OpenSettings(WindowBase? owner = null)
     {
         _ = new SettingsWindow(new SettingsWindowViewModel { Behavior = Behavior }, owner)
         {
