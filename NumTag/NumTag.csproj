@@ -9,6 +9,7 @@
         <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
         <Configurations>Debug;Release</Configurations>
         <Platforms>x64;ARM64</Platforms>
+        <NoWarn>AVLN3001</NoWarn>
     </PropertyGroup>
 
     <!-- Publish options -->

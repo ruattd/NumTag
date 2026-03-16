@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Layout;
 
-namespace NumTag.Controls;
+namespace NumTag.Core.Controls;
 
 public class MessageBox : Window
 {

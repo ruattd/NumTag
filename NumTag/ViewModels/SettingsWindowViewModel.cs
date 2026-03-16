@@ -15,9 +15,9 @@ public partial class SettingsWindowViewModel : ViewModelBase
     private const string DefaultSlotName = "默认";
 
     [ObservableProperty] private string _currentBehaviorSlot = App.Settings.CurrentBehaviorSlot ?? DefaultSlotName;
-    partial void OnCurrentBehaviorSlotChanged(string? value)
+    partial void OnCurrentBehaviorSlotChanged(string value)
     {
-        if (value == DefaultSlotName) value = null;
+        if (value == DefaultSlotName) value = null!;
         SwitchSlot(value);
     }
 

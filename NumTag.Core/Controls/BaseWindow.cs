@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Data;
 
-namespace NumTag.Controls;
+namespace NumTag.Core.Controls;
 
 public class BaseWindow : Window
 {

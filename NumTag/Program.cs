@@ -1,14 +1,23 @@
 ﻿using Avalonia;
-using NumTag.Controls;
+using NumTag.Core.Controls;
+using NumTag.Core.Extensions;
 
 namespace NumTag;
 
 sealed class Program
 {
+    private static string GetContextTag()
+    {
+        return Task.CurrentId.Let(id => id == null ? null : $"TSK#{id}")
+            ?? Thread.CurrentThread.Name
+            ?? $"#{Environment.CurrentManagedThreadId}";
+    }
+
     public static void OnUnhandledException(object ex)
     {
-        var msg = $"未捕获的异常:\n\n{ex}";
-        MessageBox.Show(msg, "锟斤拷烫烫烫");
+        var context = GetContextTag();
+        Console.Error.WriteLine($"Exception in {context}:{Environment.NewLine}{ex}");
+        MessageBox.Show($"{context} 抛出了未捕获的异常\n\n详细信息:\n{ex}", "锟斤拷烫烫烫");
     }
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any

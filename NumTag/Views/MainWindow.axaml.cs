@@ -1,5 +1,5 @@
 using Avalonia.Controls;
-using NumTag.Controls;
+using NumTag.Core.Controls;
 using NumTag.ViewModels;
 
 namespace NumTag.Views;
