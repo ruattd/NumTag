@@ -21,28 +21,20 @@ public partial class SettingsWindowViewModel : ViewModelBase
         SwitchSlot(value);
     }
 
+    [ObservableProperty] private string _addingBehaviorSlot = "";
+    [ObservableProperty] private bool _isAddingBehaviorSlot = false;
+    partial void OnIsAddingBehaviorSlotChanged(bool value)
+    {
+        if (!value) AddingBehaviorSlot = "";
+    }
+
     public AvaloniaList<string> BehaviorSlots { get; } =
         [DefaultSlotName, ..Settings.BehaviorSlots().OrderBy(x => x, StringComparer.CurrentCultureIgnoreCase)];
 
-    [RelayCommand]
-    private void Save()
-    {
-        App.Settings.SaveAsCurrentBehavior(Behavior.ToSettings());
-        App.Settings.Write();
-    }
-
-    [RelayCommand]
-    private void SaveAndClose()
-    {
-        Save();
-        CloseWindow?.Invoke();
-    }
-
-    [RelayCommand]
     private void SwitchSlot(string? slot)
     {
         // default to null
-        if (slot == DefaultSlotName) slot = null;
+        if (string.IsNullOrWhiteSpace(slot) || slot == DefaultSlotName) slot = null;
         // ignore same value
         if (App.Settings.CurrentBehaviorSlot == slot) return;
         // save current slot
@@ -64,11 +56,43 @@ public partial class SettingsWindowViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    private void Save()
+    {
+        App.Settings.SaveAsCurrentBehavior(Behavior.ToSettings());
+        App.Settings.Write();
+    }
+
+    [RelayCommand]
+    private void SaveAndClose()
+    {
+        Save();
+        CloseWindow?.Invoke();
+    }
+
+    [RelayCommand]
+    private void StartAddSlot() => IsAddingBehaviorSlot = true;
+
+    [RelayCommand]
+    private void ConfirmAddSlot()
+    {
+        var slot = AddingBehaviorSlot;
+        CancelAddSlot();
+        if (string.IsNullOrWhiteSpace(slot)) slot = DefaultSlotName;
+        CurrentBehaviorSlot = slot;
+    }
+
+    [RelayCommand]
+    private void CancelAddSlot() => IsAddingBehaviorSlot = false;
+
+    [RelayCommand]
     private void DeleteSlot(string? slot)
     {
         // ignore default
         if (slot is null or DefaultSlotName) return;
+        // ignore not existing
         if (!BehaviorSlots.Contains(slot)) return;
+        // delete
+        if (slot == CurrentBehaviorSlot) CurrentBehaviorSlot = DefaultSlotName;
         Settings.DeleteBehaviorSlot(slot);
         BehaviorSlots.Remove(slot);
     }
@@ -91,7 +115,11 @@ public partial class SettingsWindowViewModel : ViewModelBase
 
     internal void OnKeyUp(Window _, KeyEventArgs e)
     {
-        if (e.Key == Key.Enter) SaveAndClose();
+        if (e.Key == Key.Enter)
+        {
+            if (IsAddingBehaviorSlot) ConfirmAddSlot();
+            else SaveAndClose();
+        }
         else if (e.Key == Key.Escape) CancelAndClose();
     }
 }

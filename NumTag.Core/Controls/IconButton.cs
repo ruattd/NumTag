@@ -79,6 +79,6 @@ public class IconButton : ContentControl
 
     static IconButton()
     {
-        CornerRadiusProperty.OverrideDefaultValue<IconButton>(new CornerRadius(double.MaxValue));
+        CornerRadiusProperty.OverrideDefaultValue<IconButton>(new CornerRadius(65536));
     }
 }

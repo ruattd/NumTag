@@ -33,7 +33,9 @@ public record Settings
     public BehaviorSettings MergedBehavior()
     {
         // TODO merge behavior
-        return CurrentBehaviorSlot == null ? DefaultBehavior : BehaviorSlotMap[CurrentBehaviorSlot];
+        return CurrentBehaviorSlot == null
+            ? DefaultBehavior
+            : BehaviorSlotMap.GetValueOrDefault(CurrentBehaviorSlot, DefaultBehavior);
     }
 
     public void SaveAsCurrentBehavior(BehaviorSettings settings)
