@@ -17,6 +17,11 @@ public partial class SettingsWindowViewModel : ViewModelBase
     [ObservableProperty] private string _currentBehaviorSlot = App.Settings.CurrentBehaviorSlot ?? DefaultSlotName;
     partial void OnCurrentBehaviorSlotChanged(string value)
     {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            CurrentBehaviorSlot = DefaultSlotName;
+            return;
+        }
         if (value == DefaultSlotName) value = null!;
         SwitchSlot(value);
     }
@@ -48,10 +53,10 @@ public partial class SettingsWindowViewModel : ViewModelBase
             if (!BehaviorSlots.Contains(slot))
             {
                 App.Settings.SaveAsCurrentBehavior(current);
-                App.Settings.Write(slot);
                 BehaviorSlots.Add(slot);
             }
         }
+        App.Settings.Write();
         Reload();
     }
 

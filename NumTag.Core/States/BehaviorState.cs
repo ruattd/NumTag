@@ -21,6 +21,8 @@ public partial class BehaviorState : ObservableObject
     [ObservableProperty] private Brush _background = DefaultBackground;
     [ObservableProperty] private bool _startVisible = true;
     [ObservableProperty] private bool _doubleClickToHideWindow = true;
+    [ObservableProperty] private bool _rightDownCornerToOpenSettings = true;
+    [ObservableProperty] private bool _doubleShiftToOpenSettings = true;
 
     public BehaviorState(BehaviorSettings? settings = null)
     {
@@ -37,6 +39,8 @@ public partial class BehaviorState : ObservableObject
         HintTextSize = settings.HintTextSize;
         StartVisible = settings.StartVisible;
         DoubleClickToHideWindow = settings.DoubleClickToHideWindow;
+        RightDownCornerToOpenSettings = settings.RightDownCornerToOpenSettings;
+        DoubleShiftToOpenSettings = settings.DoubleShiftToOpenSettings;
         if (settings.Foreground == null) Foreground = DefaultForeground;
         else Foreground = settings.Foreground;
         if (settings.HintForeground == null) HintForeground = DefaultHintForeground;
@@ -64,6 +68,8 @@ public partial class BehaviorState : ObservableObject
             HintTextSize = HintTextSize,
             StartVisible = StartVisible,
             DoubleClickToHideWindow = DoubleClickToHideWindow,
+            RightDownCornerToOpenSettings = RightDownCornerToOpenSettings,
+            DoubleShiftToOpenSettings = DoubleShiftToOpenSettings,
             Foreground = foreground,
             HintForeground = hintForeground,
             Background = background,

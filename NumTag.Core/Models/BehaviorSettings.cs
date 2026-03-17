@@ -11,5 +11,7 @@ public record BehaviorSettings(
     BrushOption? HintForeground = null,
     BrushOption? Background = null,
     bool StartVisible = true,
-    bool DoubleClickToHideWindow = true
+    bool DoubleClickToHideWindow = true,
+    bool RightDownCornerToOpenSettings = true,
+    bool DoubleShiftToOpenSettings = true
 );

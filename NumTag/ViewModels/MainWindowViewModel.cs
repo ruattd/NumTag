@@ -42,18 +42,27 @@ public partial class MainWindowViewModel : ViewModelBase
         if (e.Key is Key.LeftShift or Key.RightShift)
         {
             var thisClickTick = Environment.TickCount64;
-            if (thisClickTick - _lastShiftClickTick < DoubleClickMaxLatency) OpenSettings(sender);
+            if (thisClickTick - _lastShiftClickTick < DoubleClickMaxLatency && Behavior.DoubleShiftToOpenSettings)
+                OpenSettings(sender);
             _lastShiftClickTick = thisClickTick;
         }
     }
 
+    private SettingsWindow? _currentSettingsWindow = null;
+
     [RelayCommand]
-    private void OpenSettings(WindowBase? owner = null)
+    private void OpenSettings(WindowBase owner)
     {
-        _ = new SettingsWindow(new SettingsWindowViewModel { Behavior = Behavior }, owner)
+        if (_currentSettingsWindow != null)
         {
-            Topmost = true,
-            WindowVisible = true
+            _currentSettingsWindow.Activate();
+            return;
+        }
+        _currentSettingsWindow = new SettingsWindow(new SettingsWindowViewModel { Behavior = Behavior }, owner)
+        {
+            // Topmost = true,
+            WindowVisible = true,
         };
+        _currentSettingsWindow.Closed += (_, _) => _currentSettingsWindow = null;
     }
 }

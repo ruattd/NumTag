@@ -24,6 +24,7 @@
         <Style Selector="TextBlock.Title">
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
         </Style>
         <Style Selector="TextBox">
             <Setter Property="Margin" Value="{StaticResource GlobalMargin}"/>
@@ -34,6 +35,11 @@
         </Style>
         <Style Selector="Button">
             <Setter Property="Margin" Value="{StaticResource GlobalMargin}"/>
+        </Style>
+        <Style Selector="ToggleSwitch">
+            <Setter Property="OnContent" Value="{x:Null}"/>
+            <Setter Property="OffContent" Value="{x:Null}"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
         </Style>
     </controls:BaseWindow.Styles>
 
@@ -57,17 +63,17 @@
                         </Grid>
                     </DataTemplate></ComboBox.ItemTemplate>
                 </ComboBox>
-                <controls:IconButton Grid.Column="2" IsVisible="{Binding !IsAddingBehaviorSlot}" HorizontalAlignment="Left" Command="{Binding StartAddSlotCommand}">
+                <controls:IconButton Grid.Column="2" ToolTip.Tip="添加 Slot" IsVisible="{Binding !IsAddingBehaviorSlot}" HorizontalAlignment="Left" Command="{Binding StartAddSlotCommand}">
                     M40 8A8 8 0 0 1 48 0H52A8 8 0 0 1 60 8V40A8 8 0 0 1 68 48H100A8 8 0 0 1 108 56V60A8 8 0 0 1 100 68H68A8 8 0 0 1 60 76V108A8 8 0 0 1 52 116H48A8 8 0 0 1 40 108V76A8 8 0 0 1 32 68H0A8 8 0 0 1-8 60V56A8 8 0 0 1 0 48H32A8 8 0 0 1 40 40Z
                 </controls:IconButton>
                 <TextBox Grid.Column="2" HorizontalAlignment="Stretch" IsVisible="{Binding IsAddingBehaviorSlot}"
-                        Watermark="Slot 名称..." Text="{Binding AddingBehaviorSlot}">
+                        Watermark="输入 Slot 名称" Text="{Binding AddingBehaviorSlot}">
                     <TextBox.InnerRightContent>
                         <StackPanel Orientation="Horizontal">
-                            <controls:IconButton Command="{Binding ConfirmAddSlotCommand}" Margin="-3">
+                            <controls:IconButton ToolTip.Tip="确认" Command="{Binding ConfirmAddSlotCommand}" Margin="-3">
                                 M12 60A8 8 0 0 1 24 60L44 80A8 8 0 0 0 56 80L104 32A8 8 0 0 1 116 32A8 8 0 0 1 116 44L60 100A12 12 0 0 1 40 100L12 72A8 8 0 0 1 12 60Z
                             </controls:IconButton>
-                            <controls:IconButton Command="{Binding CancelAddSlotCommand}" Margin="-3">
+                            <controls:IconButton ToolTip.Tip="取消" Command="{Binding CancelAddSlotCommand}" Margin="-3">
                                 M10.586 12L5.293 6.707A1 1 0 0 1 6.707 5.293L12 10.586L17.293 5.293A1 1 0 0 1 18.707 6.707L13.414 12L18.707 17.293A1 1 0 0 1 17.293 18.707L12 13.414L6.707 18.707A1 1 0 0 1 5.293 17.293L10.586 12Z
                             </controls:IconButton>
                         </StackPanel>
@@ -78,7 +84,8 @@
             </Grid>
         </Border>
         <ScrollViewer><Grid Margin="{StaticResource GlobalMargin}"
-                RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnDefinitions="Auto,*,Auto,60">
+                RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                ColumnDefinitions="Auto,*,Auto,60">
             <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Classes="Label Title" Text="内容"/>
             <TextBlock Grid.Row="1" Grid.Column="0" Text="标题" Classes="Label"/>
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Behavior.Title}"/>
@@ -100,6 +107,16 @@
             <TextBox Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Text=""/>
             <TextBlock Grid.Row="7" Grid.Column="0" Text="背景色" Classes="Label"/>
             <TextBox Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Text=""/>
+
+            <TextBlock Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="4" Classes="Label Title" Text="行为"/>
+            <TextBlock Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="3" Text="启动时显示主窗体" Classes="Label"/>
+            <ToggleSwitch Grid.Row="9" Grid.Column="3" IsChecked="{Binding Behavior.StartVisible}"/>
+            <TextBlock Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="3" Text="双击隐藏主窗体" Classes="Label"/>
+            <ToggleSwitch Grid.Row="10" Grid.Column="3" IsChecked="{Binding Behavior.DoubleClickToHideWindow}"/>
+            <TextBlock Grid.Row="11" Grid.Column="0" Grid.ColumnSpan="3" Text="单击主窗体右下角打开设置" Classes="Label"/>
+            <ToggleSwitch Grid.Row="11" Grid.Column="3" IsChecked="{Binding Behavior.RightDownCornerToOpenSettings}"/>
+            <TextBlock Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="3" Text="主窗体双击 Shift 打开设置" Classes="Label"/>
+            <ToggleSwitch Grid.Row="12" Grid.Column="3" IsChecked="{Binding Behavior.DoubleShiftToOpenSettings}"/>
         </Grid></ScrollViewer>
     </DockPanel>
 

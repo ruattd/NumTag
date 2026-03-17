@@ -45,9 +45,16 @@
                 Foreground="{Binding Behavior.HintForeground}"/>
 
         <Button Grid.Row="2" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                Command="{Binding OpenSettingsCommand}" CornerRadius="0"
+                IsEnabled="{Binding Behavior.RightDownCornerToOpenSettings}" Command="{Binding OpenSettingsCommand}"
                 CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=controls:BaseWindow}}"
-                Background="Transparent" Content=" " BorderThickness="1" BorderBrush="Transparent"/>
+                CornerRadius="0" Background="Transparent"
+                BorderThickness="1" BorderBrush="Transparent">
+            <Button.Styles>
+                <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+            </Button.Styles>
+        </Button>
     </Grid>
 
 </controls:BaseWindow>
