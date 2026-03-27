@@ -21,6 +21,11 @@ jobs:
   build:
     name: "Build"
     runs-on: ${{ inputs.runs-on }}
+    strategy:
+      matrix:
+        include:
+          - project: NumTag
+          - project: NumTag.Admin
     steps:
       - name: "Checkout"
         uses: actions/checkout@v6.0.2
@@ -30,23 +35,11 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: "Restore Packages"
-        run: dotnet restore
+      - name: "Build App"
+        run: dotnet publish ${{ matrix.project }}/${{ matrix.project }}.csproj -c ${{ inputs.config }} -r ${{ inputs.runtime }} -o ./artifact
 
-      - name: "Build App (Client)"
-        run: dotnet publish NumTag/NumTag.csproj -c ${{ inputs.config }} -r ${{ inputs.runtime }} -o ./artifact
-
-      - name: "Upload Artifact (Client)"
+      - name: "Upload Artifact"
         uses: actions/upload-artifact@v7.0.0
         with:
-          name: NumTag_${{ inputs.config }}_${{ inputs.runtime }}
+          name: ${{ matrix.project }}_${{ inputs.config }}_${{ inputs.runtime }}
           path: artifact/**
-
-      - name: "Build App (Admin)"
-        run: dotnet publish NumTag.Admin/NumTag.Admin.csproj -c ${{ inputs.config }} -r ${{ inputs.runtime }} -o ./artifact_admin
-
-      - name: "Upload Artifact (Admin)"
-        uses: actions/upload-artifact@v7.0.0
-        with:
-          name: NumTag.Admin_${{ inputs.config }}_${{ inputs.runtime }}
-          path: artifact_admin/**
