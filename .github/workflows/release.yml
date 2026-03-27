@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v6.0.2
 
       - name: "Download Artifact"
-        uses: actions/download-artifact@v7.0.0
+        uses: actions/download-artifact@v8.0.0
         with:
           name: NumTag_Release_${{ matrix.runtime }}
           path: ./artifact
@@ -79,9 +79,20 @@ jobs:
         with:
           name: NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe
 
+      - name: "Download Artifact (Admin)"
+        uses: actions/download-artifact@v8.0.0
+        with:
+          name: NumTag.Admin_Release_${{ matrix.runtime }}
+          path: ./admin
+
+      - name: "Rename Admin Executable"
+        run: mv admin/NumTag.Admin.exe NumTag.Admin_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe
+
       - name: "Upload to Release"
         uses: softprops/action-gh-release@v2.5.0
         with:
-          files: NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe
+          files: |
+            NumTag_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe
+            NumTag.Admin_${{ matrix.runtime }}_${{ github.event.release.tag_name }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

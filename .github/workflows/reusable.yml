@@ -30,11 +30,23 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
-      - name: "Build Application"
+      - name: "Restore Packages"
+        run: dotnet restore
+
+      - name: "Build App (Client)"
         run: dotnet publish NumTag/NumTag.csproj -c ${{ inputs.config }} -r ${{ inputs.runtime }} -o ./artifact
 
-      - name: "Upload Artifact"
+      - name: "Upload Artifact (Client)"
         uses: actions/upload-artifact@v7.0.0
         with:
           name: NumTag_${{ inputs.config }}_${{ inputs.runtime }}
           path: artifact/**
+
+      - name: "Build App (Admin)"
+        run: dotnet publish NumTag.Admin/NumTag.Admin.csproj -c ${{ inputs.config }} -r ${{ inputs.runtime }} -o ./artifact_admin
+
+      - name: "Upload Artifact (Admin)"
+        uses: actions/upload-artifact@v7.0.0
+        with:
+          name: NumTag.Admin_${{ inputs.config }}_${{ inputs.runtime }}
+          path: artifact_admin/**
