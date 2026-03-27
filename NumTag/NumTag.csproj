@@ -36,10 +36,5 @@
     <!-- Dependencies -->
     <ItemGroup>
         <ProjectReference Include="..\NumTag.Core\NumTag.Core.csproj" />
-        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Include="Avalonia.Diagnostics" Version="11.3.12">
-            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
-            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
-        </PackageReference>
     </ItemGroup>
 </Project>

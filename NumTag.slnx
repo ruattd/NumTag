@@ -5,6 +5,7 @@
     <Platform Name="x64"/>
     <Platform Name="ARM64"/>
   </Configurations>
+  <Project Path="NumTag.Admin/NumTag.Admin.csproj"/>
   <Project Path="NumTag.Core/NumTag.Core.csproj"/>
   <Project Path="NumTag/NumTag.csproj"/>
 </Solution>
